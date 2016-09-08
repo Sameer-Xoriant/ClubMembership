@@ -6,8 +6,8 @@ background: #358CCE;
 color: #FFF;
 border-radius: 0px;
 }
-.jumbotron-sm { padding-top: 24px;
-padding-bottom: 24px; }
+.jumbotron-sm { padding-top: 10px;
+padding-bottom: 10px; }
 .jumbotron small {
 color: #FFF;
 }
