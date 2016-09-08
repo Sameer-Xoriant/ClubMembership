@@ -27,7 +27,7 @@ font-size: 24px;
 	display: block;
 }
 .footer {
-	background: #EDEFF1;
+	background: #358CCE;
 	height: auto;
 	padding-bottom: 30px;
 	position: relative;
@@ -43,7 +43,7 @@ font-size: 24px;
 }
 .footer h3 {
 	border-bottom: 1px solid #BAC1C8;
-	color: #54697E;
+	color: #FFF;
 	font-size: 18px;
 	font-weight: 600;
 	line-height: 27px;
