@@ -1,5 +1,26 @@
 /* all the Custom CSS definition will be done here */
 
+/* Navigation */
+.navbar-brand {
+  padding: 0px;
+}
+.navbar-brand>img {
+  height: 100%;
+  padding: 15px;
+  width: auto;
+}
+.navigationBar .navbar-brand {
+  height: 80px;
+}
+.navigationBar .nav >li >a {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.navigationBar .navbar-toggle {
+  padding: 10px;
+  margin: 25px 15px 25px 0;
+}
+
 /* contact us css starts here*/
 .jumbotron {
 background: #358CCE;
