@@ -1,6 +1,7 @@
 var module = angular.module('esportivo', ['ngRoute','ngCookies']);
 
 function EsportivoController($scope, $http, $rootScope, $location, $route, $cookieStore) {
+	$scope.pwdpattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$";
 	
 	//Register Function
 	$scope.registerUser = function(fn,ln,em,occ,pass){
@@ -86,7 +87,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	    };
 	
 	
-	
+	//View Function
 	$scope.viewLoaded=function(){
 		var $item = $('.carousel .item'); 
 		var $wHeight = $(window).height() - 50;
@@ -113,8 +114,19 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		  interval: 3000,
 		  pause: "false"
 		});
-		
+		$('input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="time"], input[type="week"]').each(function() {
+		    var el = this, type = $(el).attr('type');
+		    if ($(el).val() == '') $(el).attr('type', 'text');
+		    $(el).focus(function() {
+		        $(el).attr('type', type);
+		        el.click();
+		    });
+		    $(el).blur(function() {
+		        if ($(el).val() == '') $(el).attr('type', 'text');
+		    });
+		});
 	}
+	
 	
 }
 

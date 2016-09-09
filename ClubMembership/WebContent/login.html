@@ -9,14 +9,16 @@ document.getElementById("demo").innerHTML = d;
 <div class="col-md-6"> 
 	<div class=" col-md-8 col-md-offset-1">    	    
                 <h1 align="center"><i class="fa fa-sign-in" aria-hidden="true"></i> Log in</h1>
-                <form role="form" action="javascript:;" method="post" id="login-form" autocomplete="off">
+                <form role="form" name="loginForm" action="javascript:;" method="post" id="login-form" autocomplete="off">
                     <div class="form-group">
                         <label for="email" class="sr-only">Email</label>
-                        <input type="email" name="Lemail" ng-model="Lemail" id="Lemail" class="form-control" placeholder="Email or Username">
+                        <input type="email" name="Lemail" ng-model="Lemail" id="Lemail" class="form-control" placeholder="Email or Username" required>
+                        <p id="fval" class="text-danger" ng-show="(loginForm.Lemail.$touched && loginForm.Lemail.$invalid) || loginForm.Lemail.$error.email">Enter valid Email</p>
                     </div>
                     <div class="form-group">
                         <label for="key" class="sr-only">Password</label>
-                        <input type="password" name="key" ng-model="pswd" id="key" class="form-control" placeholder="Password">
+                        <input type="password" name="pswd" ng-model="pswd" id="key" class="form-control" placeholder="Password" required>
+                        <p id="fval" class="text-danger" ng-show="loginForm.pswd.$touched && loginForm.pswd.$invalid">Password Required.</p>
                     </div>
                     <input type="submit" id="btn-login" ng-click="userLogin(Lemail,pswd)" class="btn btn-custom btn-lg btn-block" value="Log in">
                 </form>
@@ -27,30 +29,37 @@ document.getElementById("demo").innerHTML = d;
 <!-- Registration form starts here  -->
  <div class="col-md-6">        	    
                 <h1 align="center"><i class="fa fa-user" aria-hidden="true"></i> Sign up</h1>
-                <form role="form" action="javascript:;" method="post" id="login-form" autocomplete="off">
+                <form role="form" name="regForm" action="javascript:;" method="post" id="login-form" autocomplete="off">
                 	<div class="form-group">
                         <label for="email" class="sr-only">First Name</label>
-                        <input type="text" name="fname" id="fname" ng-model="fname" class="form-control" placeholder="First Name">
+                        <input type="text" name="fname" id="fname" ng-model="fname" class="form-control" placeholder="First Name" required>
+                        <p id="fval" class="text-danger" ng-show="regForm.fname.$touched && regForm.fname.$invalid">First Name Required.</p>
                     </div>
                     <div class="form-group">
                         <label for="email" class="sr-only">Last Name</label>
-                        <input type="text" name="lname" id="lname" ng-model="lname" class="form-control" placeholder="Last Name">
+                        <input type="text" name="lname" id="lname" ng-model="lname" class="form-control" placeholder="Last Name" required>
+                        <p id="fval" class="text-danger" ng-show="regForm.lname.$touched && regForm.lname.$invalid">Last Name Required.</p>
                     </div>
                      <div class="form-group">
                         <label for="email" class="sr-only">Date Of Birth</label>
-                        <input type="date" name="dob" id="dob" ng-model="dob" string-to-timestamp class="form-control" placeholder="Date Of Birth ">
+                        <input type="date" name="dob" id="dob" ng-model="dob" string-to-timestamp class="form-control" placeholder="Date Of Birth" required>
+                        <p id="fval" class="text-danger" ng-show="regForm.dob.$touched && regForm.dob.$invalid">Date of Birth Required.</p>
                     </div>
                     <div class="form-group">
                         <label for="email" class="sr-only">Occupation</label>
-                        <input type="text" name="occ" id="occ" ng-model="occ" class="form-control" placeholder="Occupation">
+                        <input type="text" name="occ" id="occ" ng-model="occ" class="form-control" placeholder="Occupation" required>
+                        <p id="fval" class="text-danger" ng-show="regForm.occ.$touched && regForm.occ.$invalid">Occupation Required.</p>
                     </div>
                     <div class="form-group">
                         <label for="email" class="sr-only">Email</label>
-                        <input type="email" name="email" id="email" ng-model="email" class="form-control" placeholder="Email">
+                        <input type="email" name="email" id="email" ng-model="email" class="form-control" placeholder="Email" required>
+                        <p id="fval" class="text-danger" ng-show="(regForm.email.$touched && regForm.email.$invalid) || regForm.email.$error.email">Enter valid Email</p>
                     </div>
                     <div class="form-group">
                         <label for="key" class="sr-only">Password</label>
-                        <input type="password" name="password1" id="password1" ng-model="password1" class="form-control" placeholder="Password">
+                        <input type="password" name="password1" id="password1" ng-model="password1" class="form-control" placeholder="Password" ng-minlength="4" required>
+                        <p id="fval" class="text-danger" ng-show="(regForm.password1.$touched && regForm.password1.$invalid) || regForm.password1.$error.minlength">*Password required and must be alphanumeric and 8 characters long</p>
+                       
                     </div>
                     <div class="form-group">
                         <label for="key" class="sr-only">System Date</label>
@@ -59,6 +68,7 @@ document.getElementById("demo").innerHTML = d;
                     <div class="form-group">
                         <label for="email" class="sr-only">Confirm Password</label>
                         <input type="password" name="password2" id="password2" ng-model="password2" class="form-control" placeholder="Confirm Password">
+                        <p class="text-danger" ng-show="(regForm.password1.$touched) && (regForm.password2.$viewValue != '' && (regForm.password1.$viewValue != regForm.password2.$viewValue))">Fields do not match!</div>
                     </div> 
                     <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" ng-click="registerUser(fname,lname,email,occupation,password1)" value="Sign up">  
                     </form>       	   
