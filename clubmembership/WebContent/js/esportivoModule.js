@@ -63,7 +63,9 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           $rootScope.cut = data.userType;
 	           $cookieStore.put("id", $rootScope.cid);
 	           $cookieStore.put("userType", $rootScope.cut);
-	           console.log($cookieStore.get("userType"));;
+	           console.log($cookieStore.get("userType"));
+	           $cookieStore.put("status", true);
+		   		$cookieStore.put("status1", false);
 	           alert('Login Success!!');
 	    }, function errorCallback(response) {
 	          alert('Failed');
@@ -82,7 +84,10 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	        }}).then(function successCallback(response) {
 	              $cookieStore.remove('id');
 	              $cookieStore.remove('userType');
-	              console.log('Logout Success !!')
+	              console.log('Logout Success !!');
+	              alert('loggedout');	              
+					$cookieStore.put("status", false);
+					$cookieStore.put("status1", true);
 	        });
 	    };
 	
@@ -125,6 +130,22 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		        if ($(el).val() == '') $(el).attr('type', 'text');
 		    });
 		});
+	}
+	
+	$scope.showstatus = function() {
+	  	
+		return $cookieStore.get("status");  
+	}
+	$scope.showstatus1 = function() {
+	  	
+		return $cookieStore.get("status1");  
+	}
+	$scope.cs = function(){
+		if($cookieStore.get("status")==null)
+			{
+			  return true;
+			}
+		
 	}
 	
 	
