@@ -49,7 +49,7 @@
 	      </div>
 	      <div id="navbar3" class="navbar-collapse collapse">
 	        <ul class="nav navbar-nav navbar-right">
-	          <li class="active"><a href="#">Home</a></li>
+	          <li class="active"><a href="#index">Home</a></li>
 	          <li><a href="#aboutus">AboutUs</a></li>
 	          <li><a href="#contact" >Contact</a></li>
 	          <li class="dropdown">
@@ -64,8 +64,13 @@
 	              <li><a href="#">One more separated link</a></li>
 	            </ul>
 	          </li>
-	          <li><a href="#login">Login</a></li>
-	          <li><a href="" ng-click="userLogout()">Logout</a></li>
+	          
+			    <li><a href="#login" ng-show="cs()" class='glyphicon glyphicon-log-in'  >Login</a></li>
+				<li><a href="#login" ng-show="showLStatus1()">Login/SignUp</a></li>
+				<li><a href="" ng-click="userLogout()" ng-show="showLStatus()"><span class="responsive"></span>Logout</a></li>
+				<li><a ng-show="showLStatus()"><span class="responsive"></span>Hello {{ showsession() }}</a></li>
+			  
+	          
 	        </ul>
 	      </div>
 	      <!--/.nav-collapse -->
@@ -104,7 +109,7 @@
 				</div>
 			</div>
 			<div class="footer-right">
-				<p>Contact Us</p>
+				<p id="contact">Contact Us</p>
 				<form action="#" method="post">
 					<input type="text" name="email" placeholder="Email" />
 					<textarea name="message" placeholder="Message"></textarea>
