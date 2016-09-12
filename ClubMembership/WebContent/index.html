@@ -14,6 +14,7 @@
    <!-- Bootstrap & Core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
    <link href="css/font-awesome.min.css" rel="stylesheet">
+   <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
    <link href="css/custom.css" rel="stylesheet">
    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
    <!-- Angular & Module Javascript -->
@@ -32,7 +33,8 @@
    
 </head>
 <body>
-	<div class="dashBar">
+	<div class="dashBar" ng-controller="EsportivoController">
+	<p ng-show="showstatus()"><span class="fa fa-user"></span> Hey {{showName()}} it's Good to see you.</p><br>
 	</div>
 	<div class="navigationBar" ng-controller="EsportivoController">
 	  <nav class="navbar navbar-inverse navbar-static-top">
@@ -52,23 +54,9 @@
 	          <li class="active"><a href="#index">Home</a></li>
 	          <li><a href="#aboutus">AboutUs</a></li>
 	          <li><a href="#contact" >Contact</a></li>
-	          <li class="dropdown">
-	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-	            <ul class="dropdown-menu" role="menu">
-	              <li><a href="#">Action</a></li>
-	              <li><a href="#">Another action</a></li>
-	              <li><a href="#">Something else here</a></li>
-	              <li class="divider"></li>
-	              <li class="dropdown-header">Nav header</li>
-	              <li><a href="#">Separated link</a></li>
-	              <li><a href="#">One more separated link</a></li>
-	            </ul>
-	          </li>         
-
-			    <li><a ng-hide="showstatus()" href="#login">Login/SignUp</a></li>
-			    <li><a ng-click="userLogout()" ng-show="showstatus()"><span class="responsive"></span>Logout</a></li>
-			    <li><a ng-show="showstatus()" ><span class="fa fa-user"></span> Hello {{showName()}}</a></li>		  
-	          
+			  <li><a ng-hide="showstatus()" href="#login">Login/SignUp</a></li>
+			  <li><a href="#dashboard" ng-show="showstatus()"><span class="responsive"></span>My Profile</a></li> 
+			  <li><a href="" ng-click="userLogout()" ng-show="showstatus()"><span class="responsive"></span>Logout</a></li> 
 	        </ul>
 	      </div>
 	      <!--/.nav-collapse -->
@@ -115,5 +103,6 @@
 				</form>
 			</div>
 		</footer>
+		<script type="text/javascript" src = "js/sweetalert.min.js"> </script>
 </body>
 </html>

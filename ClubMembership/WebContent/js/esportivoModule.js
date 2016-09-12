@@ -33,10 +33,6 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
              }
       }).then(function successCallback(response) {
       		var data = response.data;
-      		if(data == "success")
-      			{
-      			alert('alertactive');
-      			}
             alert("Registration successful!");
              },function errorCallback(response) {
             alert("Registration Failed!");
@@ -58,6 +54,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	                 }
 	    }).then(function successCallback(response) {
 	           var data = response.data;
+	           if(data.id != 'failure'){
 	           $rootScope.cid = data.id;
 	           $rootScope.cut = data.userType;
 	           $cookieStore.put("id", $rootScope.cid);
@@ -65,9 +62,16 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           $scope.userDetails();
 	           console.log($cookieStore.get("userType"));
 	           $cookieStore.put("login", true);
-	           alert('Login Success!!');
+	           swal("Welcome Aboard", "Login was Successful" , "success");
+	           }
+	           if($cookieStore.get('userType') === "User"){
+	        	   $location.path('/dashboard');
+	           }else{
+	        	   $location.path('/staffDashboard');
+	           }
 	    }, function errorCallback(response) {
-	          alert('Failed');
+	    	   swal("Login Failed" ,"", "warning");
+	    	   $location.path('/');
 	    });
 	
 	};
@@ -88,6 +92,30 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		
 	};
 	
+	//Profile Dashboard
+	$scope.userProfile = function(){
+		$http({
+	        method : 'GET',
+	        url : 'http://10.20.14.83:9001/users/' + $cookieStore.get("id"),
+	        headers : {
+	              'Content-Type' : 'application/json',
+	              'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	        }}).then(function successCallback(response) {
+	        		var data = response.data;
+	        		var userProfile = [];
+	        		var dater = [];
+	        		var dob = new Date(data.dateOfBirth);
+	        		dater[1] = dob.toString().substring(4, 7);
+	        		dater[2] = dob.toString().substring(8, 10);
+	        		dater[3] = dob.toString().substring(11, 16);
+	        		var finalDob = dater.join(" ");
+	        		userProfile.push({id: data.id, firstName : data.firstName, lastName: data.lastName, emailId: data.emailId, dateOfBirth : finalDob, 
+	        			mobileNumber : data.mobileNumber, occupation: data.occupation, registeredDate: data.registeredDate, password: data.password, totalAmount : data.totalAmount,
+	        			status : data.status, userType : data.userType, entranceFee : data.entranceFee, facilities : data.facilities, addOns : data.addOns, previousRenewalTime : data.previousRenewalTime});
+	        		$scope.userProfile = userProfile[0];
+	        });
+	};
+	
 	//Logout Function
 	$scope.userLogout = function() {
 	    $http({
@@ -102,7 +130,8 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	              $cookieStore.remove('Name');	              
 	              $cookieStore.put("login", false);
 	              console.log('Logout Success !!');
-	              alert('loggedout');	
+	              swal('Adiós mi amigo.');
+	              $location.path('/');
 	              });
 	        };              
 	
@@ -190,6 +219,14 @@ module.config(function($routeProvider){
 		.when('/aboutus', {
 			controller: 'EsportivoController',
 			templateUrl: 'aboutus.html'
-		})	
+		})
+		.when('/dashboard', {
+			controller: 'EsportivoController',
+			templateUrl: 'dashboard.html'
+		})
+		.when('/staffDashboard', {
+			controller: 'EsportivoController',
+			templateUrl: 'staffDashboard.html'
+		})
 		.otherwise({redirectTo: '/'})
 });
