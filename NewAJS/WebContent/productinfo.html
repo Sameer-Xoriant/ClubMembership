@@ -1,0 +1,31 @@
+	<form>
+        <label>Name </label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <input type="text" name="name" ng-model="newproduct.name" /><br>
+        <label>Quantity </label>&nbsp&nbsp&nbsp&nbsp
+        <input type="text" name="quantity" ng-model="newproduct.quantity" /><br>
+        <label>Price </label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <input type="text" name="price" ng-model="newproduct.price" /><rb>
+        <br/>
+        <input type="hidden" ng-model="newproduct.id" />
+        <input type="button" value="Save" ng-click="saveProduct()" class="btn btn-primary" />
+    </form><br><br>
+    <table  border="1" style="width:60%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="product in products">
+                <td>{{ product.name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.price }}</td>
+                <td> <a href="javascript:void(0)" ng-click="edit(product.id)">Edit Product</a> | <a href="javascript:void(0)" ng-click="delete(product.id)">Delete Product</a>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
