@@ -33,9 +33,9 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
              }
       }).then(function successCallback(response) {
       		var data = response.data;
-            alert("Registration successful!");
+            swal("Registration successful!" , "Now you can Proceed To login" , "success");
              },function errorCallback(response) {
-            alert("Registration Failed!");
+            alert("Registration successful!" , "Please try again" , "warning");
           	  });
 	};
 	
@@ -64,16 +64,65 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           $cookieStore.put("login", true);
 	           swal("Welcome Aboard", "Login was Successful" , "success");
 	           }
-	           if($cookieStore.get('userType') === "User"){
+	           if($cookieStore.get('userType') === "User" || $cookieStore.get('userType') === "permanent"){
 	        	   $location.path('/dashboard');
-	           }else{
+	           }else if($cookieStore.get('userType') === "Staff" || $cookieStore.get('userType') === "Secretary"){
 	        	   $location.path('/staffDashboard');
+	           }else {
+	    	   swal("Login Failed" ," ", "warning");
+	    	   $location.path('/login');
 	           }
-	    }, function errorCallback(response) {
-	    	   swal("Login Failed" ,"", "warning");
-	    	   $location.path('/');
 	    });
+	};
 	
+	//Get Pending Request
+	$scope.getPending = function(){
+		console.log("hello");
+		var users=[];
+		$http({
+	        method : 'GET',
+	        url : 'http://10.20.14.83:9001/users/pendingrequests/' + $cookieStore.get("id"),
+	        headers : {
+	              'Content-Type' : 'application/json',
+	              'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	        }}).then(function successCallback(response) {
+	        	$scope.users = response.data;
+	        	});             
+	};
+	
+	//Approve Status 1
+	$scope.approveUser = function(a) {
+	    $http({
+	           method : 'GET',
+	           url : 'http://10.20.14.83:9001/users/request?email=' + a + '&status=accept',
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           if(data.status != null){
+	        	   swal("User Approved :D" , "User Reminded" , "success");
+	        	   $route.reload();
+	           }
+	    });
+	};
+	
+	$scope.rejectUser = function(a) {
+	    $http({
+	           method : 'GET',
+	           url : 'http://10.20.14.83:9001/users/request?email=' + a + '&status=1',
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           if(data.status == ""){
+	        	   swal("User Rejected :D" , "User Reminded" , "success");
+	        	   $route.reload();
+	           }
+	    });
 	};
 	
 	$scope.userDetails = function(){
@@ -111,10 +160,27 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	        		var finalDob = dater.join(" ");
 	        		userProfile.push({id: data.id, firstName : data.firstName, lastName: data.lastName, emailId: data.emailId, dateOfBirth : finalDob, 
 	        			mobileNumber : data.mobileNumber, occupation: data.occupation, registeredDate: data.registeredDate, password: data.password, totalAmount : data.totalAmount,
-	        			status : data.status, userType : data.userType, entranceFee : data.entranceFee, facilities : data.facilities, addOns : data.addOns, previousRenewalTime : data.previousRenewalTime});
+	        			status : data.status, userType : data.userType, entranceFee : data.entranceFee, facilities : data.facilities, addOns : data.addOns, previousRenewalTime : data.previousRenewalTime, paymentDone : data.paymentDone});
 	        		$scope.userProfile = userProfile[0];
 	        });
 	};
+	
+	//Payment Model
+	$scope.payu = function() {
+		$http({
+	           method : 'PUT',
+	           url : 'http://10.20.14.83:9001/users/payment/' + $cookieStore.get("id") + '/entry',
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           swal('payment success');
+	    }, function errorCallback(response) {
+	           swal('Failed');
+	    }); 
+};
 	
 	//Logout Function
 	$scope.userLogout = function() {
@@ -185,6 +251,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		return $cookieStore.get("Name");
 
 	};
+	
 };
 	
 	
@@ -227,6 +294,10 @@ module.config(function($routeProvider){
 		.when('/staffDashboard', {
 			controller: 'EsportivoController',
 			templateUrl: 'staffDashboard.html'
+		})
+		.when('/payu', {
+			controller: 'EsportivoController',
+			templateUrl: 'payu.html'
 		})
 		.otherwise({redirectTo: '/'})
 });

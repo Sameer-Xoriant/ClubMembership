@@ -25,8 +25,8 @@
                 <h4 ng-if="userProfile.occupation != null"><strong> Occupation</strong> : {{userProfile.occupation}} </h4>
                 <h4><strong> Registration Date</strong> : {{userProfile.registeredDate | date : 'short'}} </h4>
                 <h4><strong> User Type</strong> : {{userProfile.userType}}</h4>
-                <h4 ng-if="userProfile.paymentDone != null"><strong> Payment Done</strong> : Yes</h4>
-                <h4 ng-if="userProfile.paymentDone == null"><strong> Payment Done</strong> : No</h4>
+                <h4 ng-if="userProfile.paymentDone == 1"><strong> Payment Done</strong> : Yes</h4>
+                <h4 ng-if="userProfile.paymentDone == 0"><strong> Payment Done</strong> : No</h4>
                 <h4><strong> Date of Birth</strong> : {{userProfile.dateOfBirth}}</h4>
                 </div>
                 <div class="col-lg-6 profile-right" align="left">
@@ -38,8 +38,9 @@
                 </div>
                 <div class="col-md-8 col-md-offset-2 text-center">
                 <br><br><br><br>
-                <a href="http://rolandtheme.com" class="btn btn-default secondary-bg btn-lg">Edit Profile</a>
-                <a href="http://rolyart.ro/contact" class="btn btn-default page-scroll primary-bg btn-lg">Upgrade / Renew Membership</a>
+                <a href="" class="btn btn-default secondary-bg btn-lg">Edit Profile</a>
+                <a href="" class="btn btn-default page-scroll primary-bg btn-lg">Upgrade / Renew Membership</a>
+                <a href="#payu" class="btn btn-default page-scroll primary-bg btn-lg">Make Payment</a>
                 </div>
             </div>
         </div>

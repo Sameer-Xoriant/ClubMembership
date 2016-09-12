@@ -13,7 +13,7 @@
 					</div>
                     <div class="clearfix"></div>
 
-                    <h2 class="name"><b>{{userProfile.firstName}}</b> {{userProfile.lastName}} Stafffffffffffffff</</h2>
+                    <h2 class="name"><b>{{userProfile.firstName}}</b> {{userProfile.lastName}}</</h2>
                     <h3 class="position">{{userProfile.occupation}}</h3>
                     <div class="title-divider">
                         <span class="hr-divider col-xs-5"></span>
@@ -25,22 +25,45 @@
                 <h4 ng-if="userProfile.occupation != null"><strong> Occupation</strong> : {{userProfile.occupation}} </h4>
                 <h4><strong> Registration Date</strong> : {{userProfile.registeredDate | date : 'short'}} </h4>
                 <h4><strong> User Type</strong> : {{userProfile.userType}}</h4>
-                <h4 ng-if="userProfile.paymentDone != null"><strong> Payment Done</strong> : Yes</h4>
-                <h4 ng-if="userProfile.paymentDone == null"><strong> Payment Done</strong> : No</h4>
-                <h4><strong> Date of Birth</strong> : {{userProfile.dateOfBirth}}</h4>
                 </div>
                 <div class="col-lg-6 profile-right" align="left">
-                <h4 ng-if="userProfile.status == 0"><strong> Status</strong> : Approval Pending </h4>
-                <h4 ng-if="userProfile.status == 1"><strong> Status</strong> : Approved </h4>
                 <h4><strong> Mobile Number</strong> : {{userProfile.mobileNumber}} </h4>
-                <h4><strong> Entrance Fee</strong>  : {{userProfile.entranceFee | currency: "₹" : 0 }}</h4>
                 <h4><strong> Joining Date</strong> : {{userProfile.registeredDate | date : 'short'}}</h4>
+                <h4><strong> Date of Birth</strong> : {{userProfile.dateOfBirth}}</h4>
                 </div>
-                <div class="col-md-8 col-md-offset-2 text-center">
-                <br><br><br><br>
-                <a href="http://rolandtheme.com" class="btn btn-default secondary-bg btn-lg">Edit Profile</a>
-                <a href="http://rolyart.ro/contact" class="btn btn-default page-scroll primary-bg btn-lg">Upgrade / Renew Membership</a>
-                </div>
+
             </div>
         </div>
 </section>
+
+<!-- User Details starts here -->
+<div class="container">
+	<div class="row">
+	<div class="col-md-12">
+        <div class="table-responsive">
+        <h3>Pending requests</h3>
+        <table id="mytable" class="table table-bordred table-striped" ng-init="getPending()" >
+            <thead>
+				<th><b>First Name</b></th>
+				<th><b>Last Name</b></th>
+				<th><b>Occupation</b></th>
+				<th><b>Entrance fee</b></th>
+				<th><b>Date of Birth</b></th>
+				<th><b>Date of Joining</b></th>
+                <th><b>Approve/Reject</b></th>
+            </thead>
+			
+    		<tr ng-repeat="user in users">
+    			<td>{{user.firstName}}</td>
+    			<td>{{user.lastName}}</td>
+    			<td>{{user.occupation}}</td>
+    			<td>{{user.entranceFee}}</td>
+    			<td>{{user.dateOfBirth}}</td>
+    			<td>{{user.registeredDate}}</td>
+    			<td><span class="btn btn-success glyphicon glyphicon-ok" ng-click="approveUser(user.emailId)"></span>&nbsp;<button  class='btn btn-danger glyphicon glyphicon-remove row-remove' ng-click="rejectUser(user.emailId)" ></button></td>
+    		</tr>
+		</table>
+	</div>
+</div>
+</div>
+</div>
