@@ -1,7 +1,7 @@
 var module = angular.module('esportivo', ['ngRoute','ngCookies']);
 
 function EsportivoController($scope, $http, $rootScope, $location, $route, $cookieStore) {
-	$scope.pwdpattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$";
+
 	//Register Function
 	$scope.registerUser = function(fn,ln,em,occ,pass){
 		 var BDate=new Date($scope.dob).toLocaleDateString().split("/");
@@ -86,7 +86,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 						
 		        });
 		
-	}
+	};
 	
 	//Logout Function
 	$scope.userLogout = function() {
@@ -99,13 +99,12 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	        }}).then(function successCallback(response) {
 	              $cookieStore.remove('id');
 	              $cookieStore.remove('userType');
+	              $cookieStore.remove('Name');	              
 	              $cookieStore.put("login", false);
 	              console.log('Logout Success !!');
-	              alert('loggedout');	              
-					
-	        });
-	    };
-	
+	              alert('loggedout');	
+	              });
+	        };              
 	
 	//View Function
 	$scope.viewLoaded=function(){
@@ -145,26 +144,22 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		        if ($(el).val() == '') $(el).attr('type', 'text');
 		    });
 		});
-	}
-	$scope.cs = function(){
-		if($cookieStore.get("status")==null)
-			{
-			  return true;
-			}
-		
-	}
+	};
+
 	$scope.showstatus = function() {
 	  	
 		return $cookieStore.get("login");  
-	}
+	};
 
 	$scope.showName = function(){
 		
 		return $cookieStore.get("Name");
-	}
+
+	};
+};
 	
 	
-}
+
 
 module.controller('EsportivoController', EsportivoController);
 
