@@ -33,9 +33,9 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
              }
       }).then(function successCallback(response) {
       		var data = response.data;
-            swal("Registration successful!" , "Now you can Proceed To login" , "success");
+            swal({title: "Registration successful!",   text: "Now you can Proceed To login.",   imageUrl: "images/thumbs-up.jpg" });
              },function errorCallback(response) {
-            alert("Registration successful!" , "Please try again" , "warning");
+            alert("Registration Fialed !" , "Please try again" , "warning");
           	  });
 	};
 	
@@ -62,7 +62,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           $scope.userDetails();
 	           console.log($cookieStore.get("userType"));
 	           $cookieStore.put("login", true);
-	           swal("Welcome Aboard", "Login was Successful" , "success");
+	           swal("Welcome Aboard !", "Login was Successful" , "success");
 	           }
 	           if($cookieStore.get('userType') === "User" || $cookieStore.get('userType') === "permanent"){
 	        	   $location.path('/dashboard');
@@ -176,9 +176,10 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           }
 	    }).then(function successCallback(response) {
 	           var data = response.data;
-	           swal('payment success');
+	           swal("Payment Done Successfully" , "" , "success");
+	           $location.path('/dashboard');
 	    }, function errorCallback(response) {
-	           swal('Failed');
+	    		swal("Payment Declined." , "Please try again later." , "warning");
 	    }); 
 };
 	
