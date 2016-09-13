@@ -77,7 +77,6 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	
 	//Get Pending Request
 	$scope.getPending = function(){
-		console.log("hello");
 		var users=[];
 		$http({
 	        method : 'GET',
@@ -87,6 +86,20 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	              'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
 	        }}).then(function successCallback(response) {
 	        	$scope.users = response.data;
+	        	});             
+	};
+	
+	//Get Permanent Pending
+	$scope.getPermPending = function(){
+		var permUsers=[];
+		$http({
+	        method : 'GET',
+	        url : 'http://10.20.14.83:9001/users/pendingrequests/permanent/' + $cookieStore.get("id"),
+	        headers : {
+	              'Content-Type' : 'application/json',
+	              'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	        }}).then(function successCallback(response) {
+	        	$scope.permUsers = response.data;
 	        	});             
 	};
 	
@@ -108,6 +121,43 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	    });
 	};
 	
+	//Approve Perm User
+	$scope.approvePermUser = function(a) {
+	    $http({
+	           method : 'PUT',
+	           url : 'http://10.20.14.83:9001/users/status/approve/permanent/' + a,
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           if(data.result != null){
+	        	   swal("Approved !" , "Usertype set To Permanent" , "success");
+	        	   $route.reload();
+	           }
+	    });
+	};
+	
+	//Reject Perm user
+	$scope.rejectPerm = function(a) {
+		$http({
+	           method : 'PUT',
+	           url : 'http://10.20.14.83:9001/users/payment/' + a + '/entry',
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           console.log("Rejected");
+	    }, function errorCallback(response) {
+	    		console.log("Error Hoo Gaya bhai");
+	    }); 
+};
+
+	
+	//Reject Normal user
 	$scope.rejectUser = function(a) {
 	    $http({
 	           method : 'GET',
@@ -125,6 +175,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	    });
 	};
 	
+	//Set User Details
 	$scope.userDetails = function(){
 		 $http({
 		        method : 'GET',
@@ -135,14 +186,18 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		        }}).then(function successCallback(response) {
 		        		var data = response.data;
 			           $rootScope.cname = data.firstName;
+			           $rootScope.cdate = data.registeredDate;
+			           var dater = new Date($rootScope.cdate).toLocaleDateString();
 			           $cookieStore.put("Name", $rootScope.cname);
-						
+			           $cookieStore.put("dater",dater);
+			           console.log($cookieStore.get("dater"));
 		        });
 		
 	};
 	
 	//Profile Dashboard
 	$scope.userProfile = function(){
+		if($cookieStore.get("id") != null){
 		$http({
 	        method : 'GET',
 	        url : 'http://10.20.14.83:9001/users/' + $cookieStore.get("id"),
@@ -163,7 +218,10 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	        			status : data.status, userType : data.userType, entranceFee : data.entranceFee, facilities : data.facilities, addOns : data.addOns, previousRenewalTime : data.previousRenewalTime, paymentDone : data.paymentDone});
 	        		$scope.userProfile = userProfile[0];
 	        });
-	};
+	}else{
+		$location.path('/login');
+	}
+};
 	
 	//Payment Model
 	$scope.payu = function() {
@@ -182,6 +240,61 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	    		swal("Payment Declined." , "Please try again later." , "warning");
 	    }); 
 };
+
+//Payment Model
+$scope.permPayu = function() {
+	$http({
+           method : 'PUT',
+           url : 'http://10.20.14.83:9001/users/payment/' + $cookieStore.get("id") + '/user',
+           headers : {
+                 'Content-Type' : 'application/json',
+                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+           }
+    }).then(function successCallback(response) {
+           var data = response.data;
+           swal("Payment Done Successfully" , "" , "success");
+           $location.path('/dashboard');
+    }, function errorCallback(response) {
+    		swal("Payment Declined." , "Please try again later." , "warning");
+    }); 
+};
+
+$scope.updateUser = function() {
+	var id = $cookieStore.get('id');
+	var f=$(".modal-body #updatefname").val();
+	var l=$(".modal-body #updatelname").val();
+	var o=$(".modal-body #updateocc").val();
+	var m=$(".modal-body #updatemob").val();
+	$http({
+		method : 'PUT',
+		url : 'http://10.20.14.83:9001/users/' + $cookieStore.get("id"),
+		headers : {
+			'Content-Type' : 'application/json',
+			'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/',
+			'auth-token' : $cookieStore.get('auth-token')
+		},
+		data : {
+			"Id" : id,
+			"firstName" : f,
+			"lastName" : l,
+			"occupation" : o,
+			"mobileNumber" : m,
+		}
+	}).then(function successCallback(response) {
+		var data = response.data;
+		if (data.id != null) 
+		{
+			$('#updateModal').modal('hide');
+			$route.reload();
+			swal('Profile Updated');
+		} else 
+		{
+			swal('Profile not updated'+"\n\n"+"Not valid auth-token or postid");
+		}		
+	}, function errorCallback(response) {
+		swal("Server Error. Try After Some time: " + response.data.data.error);
+	});
+};
 	
 	//Logout Function
 	$scope.userLogout = function() {
@@ -194,13 +307,46 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	        }}).then(function successCallback(response) {
 	              $cookieStore.remove('id');
 	              $cookieStore.remove('userType');
-	              $cookieStore.remove('Name');	              
+	              $cookieStore.remove('Name');
+	              $cookieStore.remove('dater');	
 	              $cookieStore.put("login", false);
 	              console.log('Logout Success !!');
 	              swal('Adiós mi amigo.');
 	              $location.path('/');
 	              });
-	        };              
+	        };
+	
+	//Compare dates
+	$scope.compDate = function(){
+		var datetoday = new Date().toISOString();
+		console.log(datetoday);
+		var dateold = new Date($cookieStore.get("dater")).toISOString();
+		var timeDiff = Math.floor((Date.parse(datetoday) - Date.parse(dateold))/86400000);
+        console.log(timeDiff);
+        if(timeDiff > 90){
+        	$scope.userPapplication();
+        }else{
+        	swal("Sorry !" , "You need to wate for 90 days before applying for Permanent Membership");
+        }
+	};
+		        
+	// Apply for Permanent Membership
+	$scope.userPapplication = function(){
+		$http({
+	           method : 'PUT',
+	           url : 'http://10.20.14.83:9001/users/status/apply/permanent/' + $cookieStore.get("id"),
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           swal("Application Successfull" , "The Staff will get back to you soon." , "success");
+	           $route.reload();
+	    }, function errorCallback(response) {
+	    		swal("Application Failed." , "Please contact out helpdesk." , "warning");
+	    }); 
+	};
 	
 	//View Function
 	$scope.viewLoaded=function(){
@@ -299,6 +445,22 @@ module.config(function($routeProvider){
 		.when('/payu', {
 			controller: 'EsportivoController',
 			templateUrl: 'payu.html'
+		})
+		.when('/indoor', {
+			controller: 'EsportivoController',
+			templateUrl: 'Indoor.html'
+		})
+		.when('/outdoor', {
+			controller: 'EsportivoController',
+			templateUrl: 'Outdoor.html'
+		})
+		.when('/leisure', {
+			controller: 'EsportivoController',
+			templateUrl: 'Leisure.html'
+		})
+		.when('/permPay', {
+			controller: 'EsportivoController',
+			templateUrl: 'permpay.html'
 		})
 		.otherwise({redirectTo: '/'})
 });

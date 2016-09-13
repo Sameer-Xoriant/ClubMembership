@@ -1,4 +1,5 @@
-<section id="about" class="section-content about" ng-controller="EsportivoController">
+<div ng-controller="EsportivoController" ng-init="userProfile()" ng-model="userProfile">
+<section id="about" class="section-content about">
         <div class="container" ng-init="userProfile()" ng-model="userProfile">
         	<div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -22,7 +23,6 @@
                     </div>
                 </div>
                 <div class="col-lg-6 profile-left" align="left">
-                <h4 ng-if="userProfile.occupation != null"><strong> Occupation</strong> : {{userProfile.occupation}} </h4>
                 <h4><strong> Registration Date</strong> : {{userProfile.registeredDate | date : 'short'}} </h4>
                 <h4><strong> User Type</strong> : {{userProfile.userType}}</h4>
                 <h4 ng-if="userProfile.paymentDone == 1"><strong> Payment Done</strong> : Yes</h4>
@@ -31,17 +31,55 @@
                 </div>
                 <div class="col-lg-6 profile-right" align="left">
                 <h4 ng-if="userProfile.status == 0"><strong> Status</strong> : Approval Pending </h4>
-                <h4 ng-if="userProfile.status == 1"><strong> Status</strong> : Approved </h4>
+                <h4 ng-if="userProfile.status != 0"><strong> Status</strong> : Approved </h4>
                 <h4><strong> Mobile Number</strong> : {{userProfile.mobileNumber}} </h4>
                 <h4><strong> Entrance Fee</strong>  : {{userProfile.entranceFee | currency: "₹" : 0 }}</h4>
                 <h4><strong> Joining Date</strong> : {{userProfile.registeredDate | date : 'short'}}</h4>
                 </div>
                 <div class="col-md-8 col-md-offset-2 text-center">
                 <br><br><br><br>
-                <a href="" class="btn btn-default secondary-bg btn-lg">Edit Profile</a>
-                <a href="" class="btn btn-default page-scroll primary-bg btn-lg">Upgrade / Renew Membership</a>
-                <a href="#payu" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.paymentDone == 0 && userProfile.status == 1">Make Payment</a>
+                <a href="" class="btn btn-default secondary-bg btn-lg" data-id="{{ userProfile.id }}" data-toggle="modal" ng-click="update_modal()" data-target="#updateModal">Edit Profile</a>
+                <a href="" ng-if="userProfile.status == 2" class="btn btn-default page-scroll primary-bg btn-lg" ng-click="compDate()">Apply for Permanent Membership</a>
+                <a href="#payu" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 1">Make Payment</a>
+                <a href="#permPay" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 4">Make Payment for Permanent Membership</a>
                 </div>
             </div>
         </div>
 </section>
+<!-- Edit Profile modal -->
+	<div align="left" class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel">
+		<div class="modal-dialog" role="document">
+	 		<div class="modal-content">
+	  			<div class="modal-header">
+	      			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      		  	<h4 class="modal-title" id="updateModalLabel">Edit Profile</h4>
+	    	   	</div>
+		   		<div class="modal-body">
+			       	<form>
+			  			<div class="form-group">
+			  		 		<label for="updateInputName">First Name</label>
+			  		 		<input type="text" class="form-control" id="updatefname" ng-modal="ngupdatefname" value="{{userProfile.firstName}}">
+			 			</div><br><br>
+			 			<div class="form-group">
+			  		 		<label for="updateInputName">Last Name</label>
+			  		 		<input type="text" class="form-control" id="updatelname" ng-modal="ngupdatelname" value="{{userProfile.lastName}}">
+			 			</div><br><br>
+			  			<div class="form-group">
+			   				<label for="updateInputocc">Occupation</label>
+			   				<input type="text" class="form-control" id="updateocc" ng-modal="ngupdateocc" value="{{userProfile.occupation}}">
+			 		 	</div><br><br>
+			 		 	
+			 		 	<div class="form-group">
+			   				<label for="updateInputmob">Mobile No</label>
+							<input type="text" class="form-control" id="updatemob" ng-modal="ngupdatemob" value="{{userProfile.mobileNumber}}">			   			
+			   			</div><br><br>
+					</form>
+				</div>
+			
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-primary" ng-click="updateUser()">Update</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+</div>

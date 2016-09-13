@@ -41,7 +41,7 @@
 	<div class="row">
 	<div class="col-md-12">
         <div class="table-responsive">
-        <h3>Pending requests</h3>
+        <h3>Pending User requests</h3>
         <table id="mytable" class="table table-bordred table-striped" ng-init="getPending()" >
             <thead>
 				<th><b>First Name</b></th>
@@ -61,6 +61,37 @@
     			<td>{{user.dateOfBirth}}</td>
     			<td>{{user.registeredDate}}</td>
     			<td><span class="btn btn-success glyphicon glyphicon-ok" ng-click="approveUser(user.emailId)"></span>&nbsp;<button  class='btn btn-danger glyphicon glyphicon-remove row-remove' ng-click="rejectUser(user.emailId)" ></button></td>
+    		</tr>
+		</table>
+	</div>
+</div>
+</div>
+</div>
+<!-- Pending Perm Reqs -->
+<div class="container">
+	<div class="row">
+	<div class="col-md-12">
+        <div class="table-responsive">
+        <h3>Pending User requests</h3>
+        <table id="mytable" class="table table-bordred table-striped" ng-init="getPermPending()" >
+            <thead>
+				<th><b>First Name</b></th>
+				<th><b>Last Name</b></th>
+				<th><b>Occupation</b></th>
+				<th><b>Entrance fee</b></th>
+				<th><b>Date of Birth</b></th>
+				<th><b>Date of Joining</b></th>
+                <th><b>Approve/Reject</b></th>
+            </thead>
+			
+    		<tr ng-repeat="user in permUsers">
+    			<td>{{user.firstName}}</td>
+    			<td>{{user.lastName}}</td>
+    			<td>{{user.occupation}}</td>
+    			<td>{{user.entranceFee}}</td>
+    			<td>{{user.dateOfBirth}}</td>
+    			<td>{{user.registeredDate}}</td>
+    			<td><span class="btn btn-success glyphicon glyphicon-ok" ng-click="approvePermUser(user.id)"></span>&nbsp;<button  class='btn btn-danger glyphicon glyphicon-remove row-remove' ng-click="rejectPerm(user.id)" ></button></td>
     		</tr>
 		</table>
 	</div>
