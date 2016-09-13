@@ -40,7 +40,9 @@
                 <br><br><br><br>
                 <a href="" class="btn btn-default secondary-bg btn-lg">Edit Profile</a>
                 <a href="" class="btn btn-default page-scroll primary-bg btn-lg">Upgrade / Renew Membership</a>
+                <div ng-if="userProfile.paymentDone == 0 && userProfile.status == 1">
                 <a href="#payu" class="btn btn-default page-scroll primary-bg btn-lg">Make Payment</a>
+                </div>
                 </div>
             </div>
         </div>
