@@ -1,8 +1,8 @@
-<div ng-controller="EsportivoController" ng-init="userProfile()" ng-model="userProfile">
+<div ng-controller="EsportivoController">
 <section id="about" class="section-content about">
         <div class="container" ng-init="userProfile()" ng-model="userProfile">
         	<div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-12">
                 <figure class="fig-profile wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
                 	<img class="img-responsive img-circle img-profile" title="{{userProfile.firstName + userProfile.lastName}}" alt="{{userProfile.firstName + userProfile.lastName}}" src="http://rolyart.ro/wp-content/uploads/2016/07/roland-maruntelu-freelancer-romania.jpg">
                     <figcaption>Hello !</figcaption> 
@@ -13,7 +13,6 @@
                    		<span class="yellow"></span>
 					</div>
                     <div class="clearfix"></div>
-
                     <h2 class="name"><b>{{userProfile.firstName}}</b> {{userProfile.lastName}}</</h2>
                     <h3 class="position">{{userProfile.occupation}}</h3>
                     <div class="title-divider">
@@ -22,14 +21,14 @@
                         <span class="hr-divider col-xs-5"></span>
                     </div>
                 </div>
-                <div class="col-lg-6 profile-left" align="left">
+                <div class="col-lg-6 col-sm-6 profile-left" align="left">
                 <h4><strong> Registration Date</strong> : {{userProfile.registeredDate | date : 'short'}} </h4>
                 <h4><strong> User Type</strong> : {{userProfile.userType}}</h4>
                 <h4 ng-if="userProfile.paymentDone == 1"><strong> Payment Done</strong> : Yes</h4>
                 <h4 ng-if="userProfile.paymentDone == 0"><strong> Payment Done</strong> : No</h4>
                 <h4><strong> Date of Birth</strong> : {{userProfile.dateOfBirth}}</h4>
                 </div>
-                <div class="col-lg-6 profile-right" align="left">
+                <div class="col-lg-6 col-sm-6 profile-right" align="left">
                 <h4 ng-if="userProfile.status == 0"><strong> Status</strong> : Approval Pending </h4>
                 <h4 ng-if="userProfile.status != 0"><strong> Status</strong> : Approved </h4>
                 <h4><strong> Mobile Number</strong> : {{userProfile.mobileNumber}} </h4>
@@ -37,10 +36,10 @@
                 <h4><strong> Joining Date</strong> : {{userProfile.registeredDate | date : 'short'}}</h4>
                 </div>
                 <div class="col-md-8 col-md-offset-2 text-center">
-                <br><br><br><br>
+                <br><br>
                 <a href="" class="btn btn-default secondary-bg btn-lg" data-id="{{ userProfile.id }}" data-toggle="modal" ng-click="update_modal()" data-target="#updateModal">Edit Profile</a>
                 <a href="" ng-if="userProfile.status == 2" class="btn btn-default page-scroll primary-bg btn-lg" ng-click="compDate()">Apply for Permanent Membership</a>
-                <a href="" ng-click="checkApproval()" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.paymentDone == 0">Make Payment</a>
+                <a href="#payu" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.paymentDone == 0 && userProfile.status == 1">Make Payment</a>
                 <a class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 2 || userProfile.status == 5" ng-click="compDaterenew()">Renew Services</a>
                 <a href="#permPay" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 4">Make Payment for Permanent Membership</a>
                 </div>
@@ -60,23 +59,21 @@
 			  			<div class="form-group">
 			  		 		<label for="updateInputName">First Name</label>
 			  		 		<input type="text" class="form-control" id="updatefname" ng-modal="ngupdatefname" value="{{userProfile.firstName}}">
-			 			</div><br><br>
+			 			</div>
 			 			<div class="form-group">
 			  		 		<label for="updateInputName">Last Name</label>
 			  		 		<input type="text" class="form-control" id="updatelname" ng-modal="ngupdatelname" value="{{userProfile.lastName}}">
-			 			</div><br><br>
+			 			</div>
 			  			<div class="form-group">
 			   				<label for="updateInputocc">Occupation</label>
 			   				<input type="text" class="form-control" id="updateocc" ng-modal="ngupdateocc" value="{{userProfile.occupation}}">
-			 		 	</div><br><br>
-			 		 	
+			 		 	</div>
 			 		 	<div class="form-group">
 			   				<label for="updateInputmob">Mobile No</label>
 							<input type="text" class="form-control" id="updatemob" ng-modal="ngupdatemob" value="{{userProfile.mobileNumber}}">			   			
-			   			</div><br><br>
+			   			</div>
 					</form>
 				</div>
-			
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-primary" ng-click="updateUser()">Update</button>
 	      		</div>

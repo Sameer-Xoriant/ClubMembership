@@ -1,0 +1,28 @@
+<div class="container">
+	<div class="row">
+	<div class="col-md-12">
+        <div class="table-responsive">
+        <h3>All Permanent Members</h3>
+        <table id="mytable" class="table table-bordred table-striped" ng-init="getpUsers()" >
+            <thead>
+				<th><b>First Name</b></th>
+				<th><b>Last Name</b></th>
+				<th><b>Occupation</b></th>
+				<th><b>Entrance fee</b></th>
+				<th><b>Date of Birth</b></th>
+				<th><b>Date of Joining</b></th>
+            </thead>
+			
+    		<tr ng-repeat="user in regUsers">
+    			<td>{{user.firstName}}</td>
+    			<td>{{user.lastName}}</td>
+    			<td>{{user.occupation}}</td>
+    			<td>{{user.entranceFee}}</td>
+    			<td>{{user.dateOfBirth}}</td>
+    			<td>{{user.registeredDate}}</td>
+    		</tr>
+		</table>
+	</div>
+</div>
+</div>
+</div>

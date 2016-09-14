@@ -4,11 +4,13 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 
 	//Register Function
 	$scope.registerUser = function(fn,ln,em,occ,pass,phone1){
-		 var BDate=new Date($scope.dob).toLocaleDateString().split("/");
-		 var BDate=BDate[0]+BDate[1]+BDate[2];
+//		 var BDate=new Date($scope.dob).toLocaleDateString().split("/");
+//		 var BDate=BDate[0]+BDate[1]+BDate[2];
+		var BDate=new Date($scope.dob);
 		 console.log(BDate);
-		 var TDate=new Date().toLocaleDateString().split("/");
-		 var TDate=TDate[0]+TDate[1]+TDate[2];
+//		 var TDate=new Date().toLocaleDateString().split("/");
+//		 var TDate=TDate[0]+TDate[1]+TDate[2];
+		var TDate=new Date();
 		 console.log(TDate);
 		 $http({
              method : 'POST',
@@ -27,13 +29,14 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
             	   registeredDate : TDate,
             	   password : pass, 
             	   status : 0, 
-            	   userType : "Temperory", 
+            	   userType : "User", 
             	   entranceFee : 1000, 
             	   paymentDone : 0
              }
       }).then(function successCallback(response) {
       		var data = response.data;
             swal({title: "Registration successful!",   text: "Now you can Proceed To login.",   imageUrl: "images/thumbs-up.jpg" });
+            $route.reload();
              },function errorCallback(response) {
             alert("Registration Fialed !" , "Please try again" , "warning");
           	  });
@@ -64,7 +67,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           $cookieStore.put("login", true);
 	           swal("Welcome Aboard !", "Login was Successful" , "success");
 	           }
-	           if($cookieStore.get('userType') === "User" || $cookieStore.get('userType') === "permanent"){
+	           if($cookieStore.get('userType') === "User" || $cookieStore.get('userType') === "Temperory" || $cookieStore.get('userType') === "permanent"){
 	        	   $location.path('/dashboard');
 	           }else if($cookieStore.get('userType') === "Staff" || $cookieStore.get('userType') === "Secretary"){
 	        	   $location.path('/staffDashboard');
@@ -187,13 +190,11 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		        		var data = response.data;
 			           $rootScope.cname = data.firstName;
 			           $rootScope.cdate = data.registeredDate;
-			           $rootScope.cstatus = data.status;
-			           $rootScope.rdate = data.previousRenewalTime;
 			           var dater = new Date($rootScope.cdate).toLocaleDateString();
+			           $rootScope.rdate = data.previousRenewalTime;
+			           var rdater = new Date($rootScope.rdate).toLocaleDateString();
 			           $cookieStore.put("Name", $rootScope.cname);
 			           $cookieStore.put("dater",dater);
-			           var rdater = new Date($rootScope.rdate).toLocaleDateString();
-			           $cookieStore.put("Status",$rootScope.cstatus);
 			           console.log($cookieStore.get("dater"));
 		        });
 		
@@ -221,12 +222,27 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	        			mobileNumber : data.mobileNumber, occupation: data.occupation, registeredDate: data.registeredDate, password: data.password, totalAmount : data.totalAmount,
 	        			status : data.status, userType : data.userType, entranceFee : data.entranceFee, facilities : data.facilities, addOns : data.addOns, previousRenewalTime : data.previousRenewalTime, paymentDone : data.paymentDone});
 	        		$scope.userProfile = userProfile[0];
+	        		$rootScope.rdate = userProfile[0].previousRenewalTime;
+			        var rdater = new Date($rootScope.rdate).toLocaleDateString();
+			        $cookieStore.remove("rdater");
+			        $cookieStore.put("rdater",rdater);
+			        console.log($cookieStore.get("rdater"));
 	        });
 	}else{
 		$location.path('/login');
 	}
 };
 	
+	//checklogin
+	$scope.checkLogin = function(){
+		if($cookieStore.get("id") != null)
+			{
+			$location.path('/dashboard');
+			}else{
+				$location.path('/login');
+			}
+	}
+
 	//Payment Model
 	$scope.payu = function() {
 		$http({
@@ -245,60 +261,80 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	    }); 
 };
 
-//Payment Model
-$scope.permPayu = function() {
-	$http({
-           method : 'PUT',
-           url : 'http://10.20.14.83:9001/users/payment/' + $cookieStore.get("id") + '/user',
-           headers : {
-                 'Content-Type' : 'application/json',
-                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
-           }
-    }).then(function successCallback(response) {
-           var data = response.data;
-           swal("Payment Done Successfully" , "" , "success");
-           $location.path('/dashboard');
-    }, function errorCallback(response) {
-    		swal("Payment Declined." , "Please try again later." , "warning");
-    }); 
-};
+	//Payment Model
+	$scope.permPayu = function() {
+		$http({
+	           method : 'PUT',
+	           url : 'http://10.20.14.83:9001/users/payment/' + $cookieStore.get("id") + '/user',
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           swal("Payment Done Successfully" , "" , "success");
+	           $location.path('/dashboard');
+	    }, function errorCallback(response) {
+	    		swal("Payment Declined." , "Please try again later." , "warning");
+	    }); 
+	};
 
-//User Profile Update
-$scope.updateUser = function() {
-	var id = $cookieStore.get('id');
-	var f=$(".modal-body #updatefname").val();
-	var l=$(".modal-body #updatelname").val();
-	var o=$(".modal-body #updateocc").val();
-	var m=$(".modal-body #updatemob").val();
-	$http({
-		method : 'PUT',
-		url : 'http://10.20.14.83:9001/users/' + $cookieStore.get("id"),
-		headers : {
-			'Content-Type' : 'application/json',
-			'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/',
-		},
-		data : {
-			"Id" : id,
-			"firstName" : f,
-			"lastName" : l,
-			"occupation" : o,
-			"mobileNumber" : m,
-		}
-	}).then(function successCallback(response) {
-		var data = response.data;
-		if (data.id != null) 
-		{
-			$('#updateModal').modal('hide');
-			$route.reload();
-			swal('Profile Updated');
-		} else 
-		{
-			swal('Profile not updated'+"\n\n"+"Not valid auth-token or postid");
-		}		
-	}, function errorCallback(response) {
-		swal("Server Error. Try After Some time: " + response.data.data.error);
-	});
-};
+	$scope.rpayu = function() {
+		$http({
+	           method : 'GET',
+	           url : 'http://10.20.14.83:9001/users/membershipRenewal/' + $cookieStore.get("id"),
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           $rootScope.rdate = data.previousRenewalTime;
+	           var rdater = new Date($rootScope.rdate).toLocaleDateString();
+	           $cookieStore.put("rdater",rdater);
+	           swal("services Renewd Successfully" , "" , "success");
+	           $location.path('/dashboard');
+	    }, function errorCallback(response) {
+	    		swal("Renewal Denied." , "Please try again later." , "warning");
+	    }); 
+	};
+
+	$scope.updateUser = function() {
+		var id = $cookieStore.get('id');
+		var f=$(".modal-body #updatefname").val();
+		var l=$(".modal-body #updatelname").val();
+		var o=$(".modal-body #updateocc").val();
+		var m=$(".modal-body #updatemob").val();
+		$http({
+			method : 'PUT',
+			url : 'http://10.20.14.83:9001/users/' + $cookieStore.get("id"),
+			headers : {
+				'Content-Type' : 'application/json',
+				'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/',
+				'auth-token' : $cookieStore.get('auth-token')
+			},
+			data : {
+				"Id" : id,
+				"firstName" : f,
+				"lastName" : l,
+				"occupation" : o,
+				"mobileNumber" : m,
+			}
+		}).then(function successCallback(response) {
+			var data = response.data;
+			if (data.id != null) 
+			{
+				$('#updateModal').modal('hide');
+				$route.reload();
+				swal('Profile Updated');
+			} else 
+			{
+				swal('Profile not updated'+"\n\n"+"Not valid auth-token or postid");
+			}		
+		}, function errorCallback(response) {
+			swal("Server Error. Try After Some time: " + response.data.data.error);
+		});
+	};
 	
 	//Logout Function
 	$scope.userLogout = function() {
@@ -312,11 +348,10 @@ $scope.updateUser = function() {
 	              $cookieStore.remove('id');
 	              $cookieStore.remove('userType');
 	              $cookieStore.remove('Name');
-	              $cookieStore.remove('dater');
-	              $cookieStore.remove('Status');	
+	              $cookieStore.remove('dater');	
 	              $cookieStore.put("login", false);
 	              console.log('Logout Success !!');
-	              swal('Adiós mi amigo.');
+	              swal('Logged Out !' , 'Hope To See You Soon' , 'success');
 	              $location.path('/');
 	              });
 	        };
@@ -330,6 +365,19 @@ $scope.updateUser = function() {
         console.log(timeDiff);
         if(timeDiff > 90){
         	$scope.userPapplication();
+        }else{
+        	swal("Sorry !" , "You need to wate for 90 days before applying for Permanent Membership");
+        }
+	};
+	
+	$scope.compDaterenew = function(){
+		var datetoday = new Date().toISOString();
+		console.log(datetoday);
+		var dateold = new Date($cookieStore.get("rdater")).toISOString();
+		var timeDiff = Math.floor((Date.parse(datetoday) - Date.parse(dateold))/86400000);
+        console.log(timeDiff);
+        if(timeDiff > 90){
+        	$location.path('/rpay');
         }else{
         	swal("Sorry !" , "You need to wate for 90 days before applying for Permanent Membership");
         }
@@ -353,25 +401,32 @@ $scope.updateUser = function() {
 	    }); 
 	};
 	
-	//Renewal Payment
-	$scope.rpayu = function() {
+	//Get Users
+	$scope.getUsers = function(){
+		var regUsers=[];
 		$http({
-	           method : 'GET',
-	           url : 'http://10.20.14.83:9001/users/membershipRenewal/' + $cookieStore.get("id"),
-	           headers : {
-	                 'Content-Type' : 'application/json',
-	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
-	           }
-	    }).then(function successCallback(response) {
-	           var data = response.data;
-	           $rootScope.rdate = data.previousRenewalTime;
-	           var rdater = new Date($rootScope.rdate).toLocaleDateString();
-	           $cookieStore.put("rdater",rdater);
-	           swal("services Renewd Successfully" , "" , "success");
-	           $location.path('/dashboard');
-	    }, function errorCallback(response) {
-	    		swal("Renewal Denied." , "Please try again later." , "warning");
-	    }); 
+	        method : 'GET',
+	        url : 'http://10.20.14.83:9001/users/status/2' ,
+	        headers : {
+	              'Content-Type' : 'application/json',
+	              'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	        }}).then(function successCallback(response) {
+	        	$scope.regUsers = response.data;
+	        	});       
+	};
+	
+	//Get Permanent users
+	$scope.getpUsers = function(){
+		var permUsers=[];
+		$http({
+	        method : 'GET',
+	        url : 'http://10.20.14.83:9001/users/status/5' ,
+	        headers : {
+	              'Content-Type' : 'application/json',
+	              'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	        }}).then(function successCallback(response) {
+	        	$scope.permUsers = response.data;
+	        	});       
 	};
 	
 	//View Function
@@ -413,15 +468,6 @@ $scope.updateUser = function() {
 		    });
 		});
 	};
-	
-	$scope.checkApproval = function(){
-		if($cookieStore.get("Status") == 1)
-			{
-				$location.path("/payu")
-			}else{
-				swal("Approval Pending","You need to be approved to make payment", "warning");
-			}
-	}
 
 	$scope.showstatus = function() {
 	  	
@@ -434,25 +480,21 @@ $scope.updateUser = function() {
 
 	};
 	
+	$scope.getType = function(){
+		if($cookieStore.get("userType") == "Secretary")
+			{
+			$location.path('/staffDashboard');
+			}
+		else{
+			$location.path('/dashboard');
+		}
+	}
+	
+	
+	
 };
-	
-	
-
 
 module.controller('EsportivoController', EsportivoController);
-
-/* module.directive('stringToTimestamp', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, ele, attr, ngModel) {
-            // view to model
-            ngModel.$parsers.push(function(value) {
-                return Date.parse(value);
-            });
-        }
-    }
-});
-*/
 
 module.config(function($routeProvider){
 	$routeProvider
@@ -469,6 +511,18 @@ module.config(function($routeProvider){
 			controller: 'EsportivoController',
 			templateUrl: 'aboutus.html'
 		})
+		.when('/indoor', {
+			controller: 'EsportivoController',
+			templateUrl: 'Indoor.html'
+		})
+		.when('/outdoor', {
+			controller: 'EsportivoController',
+			templateUrl: 'Outdoor.html'
+		})
+		.when('/leisure', {
+			controller: 'EsportivoController',
+			templateUrl: 'Leisure.html'
+		})
 		.when('/dashboard', {
 			controller: 'EsportivoController',
 			templateUrl: 'dashboard.html'
@@ -480,6 +534,10 @@ module.config(function($routeProvider){
 		.when('/payu', {
 			controller: 'EsportivoController',
 			templateUrl: 'payu.html'
+		})
+		.when('/rpay', {
+			controller: 'EsportivoController',
+			templateUrl: 'rpay.html'
 		})
 		.when('/indoor', {
 			controller: 'EsportivoController',
@@ -497,9 +555,17 @@ module.config(function($routeProvider){
 			controller: 'EsportivoController',
 			templateUrl: 'permpay.html'
 		})
-		.when('/rpay', {
+		.when('/showall', {
 			controller: 'EsportivoController',
-			templateUrl: 'rpay.html'
+			templateUrl: 'showall.html'
+		})
+		.when('/showperm', {
+			controller: 'EsportivoController',
+			templateUrl: 'showPerm.html'
+		})
+		.when('/contactus', {
+			controller: 'EsportivoController',
+			templateUrl: 'contactus.html'
 		})
 		.otherwise({redirectTo: '/'})
 });

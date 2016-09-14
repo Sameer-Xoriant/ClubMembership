@@ -51,11 +51,11 @@
 	      </div>
 	      <div id="navbar3" class="navbar-collapse collapse">
 	        <ul class="nav navbar-nav navbar-right">
-	          <li class="active"><a href="#index">Home</a></li>
+	          <li><a href="#index">Home</a></li>
 	          <li><a href="#aboutus">AboutUs</a></li>
-	          <li><a href="#contact" >Contact</a></li>
+	          <li><a href="#contactus" >Contact</a></li>
 			  <li><a ng-hide="showstatus()" href="#login">Login/SignUp</a></li>
-			  <li><a href="#dashboard" ng-show="showstatus()"><span class="responsive"></span>My Profile</a></li> 
+			  <li><a href="" ng-show="showstatus()" ng-click="getType()"><span class="responsive"></span>My Profile</a></li> 
 			  <li><a href="" ng-click="userLogout()" ng-show="showstatus()"><span class="responsive"></span>Logout</a></li> 
 	        </ul>
 	      </div>
@@ -72,35 +72,48 @@
 	</div>
 	</div>
 	<!-- Footer Start here-->
-		<footer class="footer-distributed">
+		<footer class="footer-distributed" ng-controller="EsportivoController">
 			<div class="footer-left">
 				<h3>Club<span>Esportivo</span></h3>
 				<p class="footer-links">
 					<a href="#/">Home</a>
 					·
 					<a href="#aboutus">About</a>
-					·
-					<a href="#login">Login / Register</a>
-					·
-					<a href="#">Faq</a>
+					
+					<a href="#login" ng-hide="showstatus()">· Login / Register</a>
 					·
 					<a href="#">Contact</a>
 				</p>
 				<p class="footer-company-name">Club Esportivo &copy; 2016</p>
+			</div>
+			<div class="footer-center">
+
+				<div>
+					<i class="fa fa-map-marker"></i>
+					<p><span>21 Revolution Street</span> Paris, France</p>
+				</div>
+
+				<div>
+					<i class="fa fa-phone"></i>
+					<p>+1 555 123456</p>
+				</div>
+
+				<div>
+					<i class="fa fa-envelope"></i>
+					<p><a href="mailto:support@company.com">support@company.com</a></p>
+				</div>
+			</div>
+			<div class="footer-right">
+				<p class="footer-company-about" style="text-align:justify">
+					<span>About the Club</span>
+					Esportivo is not just a sports club. We're a family of like-minded and high-spirited people. We come together daily to inspire, challenge, and motivate each other to do more... To become more!
+				</p>
 				<div class="footer-icons">
 					<a href="#"><i class="fa fa-facebook"></i></a>
 					<a href="#"><i class="fa fa-twitter"></i></a>
 					<a href="#"><i class="fa fa-linkedin"></i></a>
 					<a href="#"><i class="fa fa-github"></i></a>
 				</div>
-			</div>
-			<div class="footer-right">
-				<p id="contact">Contact Us</p>
-				<form action="#" method="post">
-					<input type="text" name="email" placeholder="Email" />
-					<textarea name="message" placeholder="Message"></textarea>
-					<button onclick="contact()">Send</button>
-				</form>
 			</div>
 		</footer>
 		<script type="text/javascript" src = "js/sweetalert.min.js"> </script>

@@ -31,7 +31,11 @@
                 <h4><strong> Joining Date</strong> : {{userProfile.registeredDate | date : 'short'}}</h4>
                 <h4><strong> Date of Birth</strong> : {{userProfile.dateOfBirth}}</h4>
                 </div>
-
+				<div class="col-md-8 col-md-offset-2 text-center">
+                <br><br>
+                <a href="#showperm" class="btn btn-default secondary-bg btn-lg">View All Permanent Members</a>
+                <a href="#showall" class="btn btn-default page-scroll primary-bg btn-lg">View All Members</a>
+                </div>
             </div>
         </div>
 </section>
@@ -41,7 +45,7 @@
 	<div class="row">
 	<div class="col-md-12">
         <div class="table-responsive">
-        <h3>Pending User requests</h3>
+        <h3>Pending Members requests</h3>
         <table id="mytable" class="table table-bordred table-striped" ng-init="getPending()" >
             <thead>
 				<th><b>First Name</b></th>
@@ -72,7 +76,7 @@
 	<div class="row">
 	<div class="col-md-12">
         <div class="table-responsive">
-        <h3>Pending User requests</h3>
+        <h3>Pending Permanent User requests</h3>
         <table id="mytable" class="table table-bordred table-striped" ng-init="getPermPending()" >
             <thead>
 				<th><b>First Name</b></th>
