@@ -62,15 +62,20 @@ document.getElementById("demo").innerHTML = d;
                        
                     </div>
                     <div class="form-group">
-                        <label for="email" class="sr-only">Confirm Password</label>
+                        <label for="cpass" class="sr-only">Confirm Password</label>
                         <input type="password" name="password2" id="password2" ng-model="password2" class="form-control" placeholder="Confirm Password">
                         <p class="text-danger" ng-show="(regForm.password1) && (regForm.password2.$viewValue != '' && (regForm.password1.$viewValue != regForm.password2.$viewValue))">Fields do not match!</p>
+                    </div> 
+                    <div class="form-group">
+                        <label for="phone" class="sr-only">Confirm Password</label>
+                        <input type="phone" name="phone" id="phone" ng-model="phone" class="form-control" placeholder="Contact Number">
+                        <p id="fval" class="text-danger" ng-show="(regForm.phone.$touched && regForm.phone.$invalid)">Enter Phone Number</p>
                     </div> 
                     <div class="form-group">
                         <label for="key" class="sr-only">System Date</label>
                         <input type="hidden" name="sysd" id="sysd" ng-model="sysd" class="form-control" placeholder="systemdate">
                     </div>
-                    <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" ng-click="registerUser(fname,lname,email,occupation,password1)" value="Sign up">  
+                    <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" ng-click="registerUser(fname,lname,email,occ,password1,phone)" value="Sign up">  
                     </form>       	   
 			</div> <!-- /.col-xs-12 -->
 </div> <!-- /.row -->

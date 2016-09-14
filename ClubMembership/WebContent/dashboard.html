@@ -40,7 +40,8 @@
                 <br><br><br><br>
                 <a href="" class="btn btn-default secondary-bg btn-lg" data-id="{{ userProfile.id }}" data-toggle="modal" ng-click="update_modal()" data-target="#updateModal">Edit Profile</a>
                 <a href="" ng-if="userProfile.status == 2" class="btn btn-default page-scroll primary-bg btn-lg" ng-click="compDate()">Apply for Permanent Membership</a>
-                <a href="#payu" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 1">Make Payment</a>
+                <a href="" ng-click="checkApproval()" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.paymentDone == 0">Make Payment</a>
+                <a class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 2 || userProfile.status == 5" ng-click="compDaterenew()">Renew Services</a>
                 <a href="#permPay" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 4">Make Payment for Permanent Membership</a>
                 </div>
             </div>

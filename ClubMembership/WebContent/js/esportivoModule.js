@@ -3,7 +3,7 @@ var module = angular.module('esportivo', ['ngRoute','ngCookies']);
 function EsportivoController($scope, $http, $rootScope, $location, $route, $cookieStore) {
 
 	//Register Function
-	$scope.registerUser = function(fn,ln,em,occ,pass){
+	$scope.registerUser = function(fn,ln,em,occ,pass,phone1){
 		 var BDate=new Date($scope.dob).toLocaleDateString().split("/");
 		 var BDate=BDate[0]+BDate[1]+BDate[2];
 		 console.log(BDate);
@@ -22,12 +22,12 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
             	   lastName : ln, 
             	   emailId : em, 
             	   dateOfBirth : BDate, 
-            	   mobileNumber : "7666885985", 
+            	   mobileNumber : phone1, 
             	   occupation : occ, 
             	   registeredDate : TDate,
             	   password : pass, 
             	   status : 0, 
-            	   userType : "User", 
+            	   userType : "Temperory", 
             	   entranceFee : 1000, 
             	   paymentDone : 0
              }
@@ -187,9 +187,13 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		        		var data = response.data;
 			           $rootScope.cname = data.firstName;
 			           $rootScope.cdate = data.registeredDate;
+			           $rootScope.cstatus = data.status;
+			           $rootScope.rdate = data.previousRenewalTime;
 			           var dater = new Date($rootScope.cdate).toLocaleDateString();
 			           $cookieStore.put("Name", $rootScope.cname);
 			           $cookieStore.put("dater",dater);
+			           var rdater = new Date($rootScope.rdate).toLocaleDateString();
+			           $cookieStore.put("Status",$rootScope.cstatus);
 			           console.log($cookieStore.get("dater"));
 		        });
 		
@@ -259,6 +263,7 @@ $scope.permPayu = function() {
     }); 
 };
 
+//User Profile Update
 $scope.updateUser = function() {
 	var id = $cookieStore.get('id');
 	var f=$(".modal-body #updatefname").val();
@@ -271,7 +276,6 @@ $scope.updateUser = function() {
 		headers : {
 			'Content-Type' : 'application/json',
 			'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/',
-			'auth-token' : $cookieStore.get('auth-token')
 		},
 		data : {
 			"Id" : id,
@@ -308,7 +312,8 @@ $scope.updateUser = function() {
 	              $cookieStore.remove('id');
 	              $cookieStore.remove('userType');
 	              $cookieStore.remove('Name');
-	              $cookieStore.remove('dater');	
+	              $cookieStore.remove('dater');
+	              $cookieStore.remove('Status');	
 	              $cookieStore.put("login", false);
 	              console.log('Logout Success !!');
 	              swal('Adiós mi amigo.');
@@ -345,6 +350,27 @@ $scope.updateUser = function() {
 	           $route.reload();
 	    }, function errorCallback(response) {
 	    		swal("Application Failed." , "Please contact out helpdesk." , "warning");
+	    }); 
+	};
+	
+	//Renewal Payment
+	$scope.rpayu = function() {
+		$http({
+	           method : 'GET',
+	           url : 'http://10.20.14.83:9001/users/membershipRenewal/' + $cookieStore.get("id"),
+	           headers : {
+	                 'Content-Type' : 'application/json',
+	                 'Access-Control-Allow-Origin': 'http://10.20.14.83:9001/'
+	           }
+	    }).then(function successCallback(response) {
+	           var data = response.data;
+	           $rootScope.rdate = data.previousRenewalTime;
+	           var rdater = new Date($rootScope.rdate).toLocaleDateString();
+	           $cookieStore.put("rdater",rdater);
+	           swal("services Renewd Successfully" , "" , "success");
+	           $location.path('/dashboard');
+	    }, function errorCallback(response) {
+	    		swal("Renewal Denied." , "Please try again later." , "warning");
 	    }); 
 	};
 	
@@ -387,6 +413,15 @@ $scope.updateUser = function() {
 		    });
 		});
 	};
+	
+	$scope.checkApproval = function(){
+		if($cookieStore.get("Status") == 1)
+			{
+				$location.path("/payu")
+			}else{
+				swal("Approval Pending","You need to be approved to make payment", "warning");
+			}
+	}
 
 	$scope.showstatus = function() {
 	  	
@@ -461,6 +496,10 @@ module.config(function($routeProvider){
 		.when('/permPay', {
 			controller: 'EsportivoController',
 			templateUrl: 'permpay.html'
+		})
+		.when('/rpay', {
+			controller: 'EsportivoController',
+			templateUrl: 'rpay.html'
 		})
 		.otherwise({redirectTo: '/'})
 });
