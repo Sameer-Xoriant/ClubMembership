@@ -38,7 +38,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
             swal({title: "Registration successful!",   text: "Now you can Proceed To login.",   imageUrl: "images/thumbs-up.jpg" });
             $route.reload();
              },function errorCallback(response) {
-            alert("Registration Fialed !" , "Please try again" , "warning");
+            	 swal("Registration Fialed !" , "Please try again" , "warning");
           	  });
 	};
 	
@@ -432,7 +432,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	//View Function
 	$scope.viewLoaded=function(){
 		var $item = $('.carousel .item'); 
-		var $wHeight = $(window).height() - 50;
+		var $wHeight = $(window).height() - 100;
 		$item.eq(0).addClass('active');
 		$item.height($wHeight); 
 		$item.addClass('full-screen');
@@ -477,6 +477,24 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	$scope.showName = function(){
 		
 		return $cookieStore.get("Name");
+
+	};
+	
+	$scope.showId = function(){
+		var id = $cookieStore.get("id");
+		var orderNum = id.substring(5,10);
+		return orderNum;
+	};
+	
+	$scope.showdate = function(){
+		
+		return $cookieStore.get("dater");
+
+	};
+	
+	$scope.showType = function(){
+		
+		return $cookieStore.get("userType");
 
 	};
 	
@@ -566,6 +584,10 @@ module.config(function($routeProvider){
 		.when('/contactus', {
 			controller: 'EsportivoController',
 			templateUrl: 'contactus.html'
+		})
+		.when('/invoice', {
+			controller: 'EsportivoController',
+			templateUrl: 'invoice.html'
 		})
 		.otherwise({redirectTo: '/'})
 });

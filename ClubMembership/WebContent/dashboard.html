@@ -42,6 +42,7 @@
                 <a href="#payu" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.paymentDone == 0 && userProfile.status == 1">Make Payment</a>
                 <a class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 2 || userProfile.status == 5" ng-click="compDaterenew()">Renew Services</a>
                 <a href="#permPay" class="btn btn-default page-scroll primary-bg btn-lg"  ng-if="userProfile.status == 4">Make Payment for Permanent Membership</a>
+                <a href="#invoice" class="btn btn-default page-scroll secondary-bg btn-lg"  ng-if="userProfile.paymentDone == 1">Show Invoice</a>
                 </div>
             </div>
         </div>

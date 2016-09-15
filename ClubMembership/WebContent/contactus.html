@@ -1,7 +1,7 @@
 <style>
     .header {
         color: #36A0FF;
-        font-size: 27px;
+        font-size: 42px;
         padding: 10px;
     }
 
@@ -12,53 +12,69 @@
 </style>
 <div class="container">
     <div class="row">
+     <legend class="text-center header"><big>Contact us</legend>
         <div class="col-md-8">
             <div class="">
-                <form class="form-horizontal" method="post">
+                <form class="form-horizontal" method="post" name="contactForm">
                     <fieldset>
-                        <legend class="text-center header"><big>Contact us</legend>
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
                             <div class="col-md-8">
-                                <input id="fname" name="name" type="text" placeholder="First Name" class="form-control">
+                                <input id="fname" name="fname" ng-model="fname" type="text" placeholder="First Name" class="form-control" required>
+                                <p id="fval" class="text-danger" ng-show="contactForm.fname.$touched && contactForm.fname.$invalid">Enter First name.</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
                             <div class="col-md-8">
-                                <input id="lname" name="name" type="text" placeholder="Last Name" class="form-control">
+                                <input id="lname" name="lname" ng-model="lname" type="text" placeholder="Last Name" class="form-control" required>
+                                <p id="fval" class="text-danger" ng-show="contactForm.lname.$touched && contactForm.lname.$invalid">Enter Last name.</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope-o bigicon"></i></span>
                             <div class="col-md-8">
-                                <input id="email" name="email" type="text" placeholder="Email Address" class="form-control">
+                                <input id="email" name="email" ng-model="email" type="email" placeholder="Email Address" class="form-control" required>
+                                <p id="fval" class="text-danger" ng-show="(contactForm.email.$touched && contactForm.email.$invalid) || contactForm.email.$error.email">Enter valid Email</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-phone-square bigicon"></i></span>
                             <div class="col-md-8">
-                                <input id="phone" name="phone" type="text" placeholder="Phone" class="form-control">
+                                <input id="phone" name="phone" ng-model="phone" type="number" placeholder="Phone" class="form-control" required>
+                            	<p id="fval" class="text-danger" ng-show="contactForm.phone.$touched && contactForm.phone.$invalid">Enter Phone No.</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="message" name="message" placeholder="Enter your massage for us here. We will get back to you within 2 business days." rows="7"></textarea>
+                                <textarea class="form-control" id="message" name="message" ng-model="message" placeholder="Enter your massage for us here. We will get back to you within 2 business days." rows="7" required></textarea>
+                                <p id="fval" class="text-danger" ng-show="contactForm.message.$touched && contactForm.message.$invalid">Enter Message.</p>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-md-4 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-                            </div>
-                        </div>
+                        <span class="col-md-1 col-md-offset-2 text-center">
+					      <center><button type="submit" class="btn btn-primary btn-lg">Submit</button></center></span>
                     </fieldset>
                 </form>
             </div>
+        </div>
+        <div class="col-md-4">
+            <form>
+            <h3 style="margin-top:0px"><span class="glyphicon glyphicon-globe"></span> Our office</h3>
+            <address>
+                <strong>Club Esportivo</strong><br>
+                401/402 ,Amar Paradidgm<br>
+                Baner Road<br>
+                Pune-411045<br>
+                <abbr title="Phone">
+                    Phone:</abbr>
+               (020) 6604 6000
+            </address>
+            </form><br>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d121022.22223880397!2d73.7859322!3d18.5765432!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2beca9aecbb73%3A0xee557c041316bf67!2sXoriant+Solutions+Pvt.+Ltd.!5e0!3m2!1sen!2sin!4v1473912566410" width="300" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
     </div>
 </div>
