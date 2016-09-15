@@ -657,7 +657,8 @@ section {
     margin-bottom: 20Px;
 }
 .lib-panel img {
-    width: 100%;
+    width: 259px;
+    height: 194px;
     background-color: transparent;
 }
 
@@ -703,8 +704,8 @@ section {
 }
 
 .box-shadow {
-    -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
-    box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+    -webkit-box-shadow: 0 0 16px 0 rgba(0,0,0,.40);
+    box-shadow: 0 0 16px 0 rgba(0,0,0,.40);
 }
 
 .no-padding {

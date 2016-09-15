@@ -16,7 +16,7 @@
                         <input type="password" name="pswd" ng-model="pswd" id="key" class="form-control" placeholder="Password" required>
                         <p id="fval" class="text-danger" ng-show="loginForm.pswd.$touched && loginForm.pswd.$invalid">Password Required.</p>
                     </div>
-                    <input type="submit" id="btn-login" ng-click="userLogin(Lemail,pswd)" class="btn btn-custom btn-lg btn-block" value="Log in">
+                    <input type="button" id="btn-login" ng-click="userLogin(Lemail,pswd)" class="btn btn-custom btn-lg btn-block" value="Log in">
                 </form>
                 <hr/>            	   
         </div>
@@ -36,8 +36,8 @@
                         <p id="fval" class="text-danger" ng-show="regForm.lname.$touched && regForm.lname.$invalid">Last Name Required.</p>
                     </div>
                      <div class="form-group">
-                        <label for="email" class="sr-only">Date Of Birth</label>
-                        <input type="date" name="dob" id="dob" ng-model="dob" string-to-timestamp class="form-control" placeholder="Date Of Birth" required>
+                        <label for="date" class="sr-only">Date Of Birth</label>
+                        <input type="date" name="dob" id="dob" ng-model="dob" class="form-control" placeholder="Date Of Birth" data-relmax="-18"  stringToTimestamp required>
                         <p id="fval" class="text-danger" ng-show="regForm.dob.$touched && regForm.dob.$invalid">Date of Birth Required.</p>
                     </div>
                     <div class="form-group">
@@ -70,7 +70,7 @@
                         <label for="key" class="sr-only">System Date</label>
                         <input type="hidden" name="sysd" id="sysd" ng-model="sysd" class="form-control" placeholder="systemdate">
                     </div>
-                    <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" ng-click="registerUser(fname,lname,email,occ,password1,phone)" value="Sign up">  
+                    <input type="button" id="btn-login" class="btn btn-custom btn-lg btn-block" ng-click="registerUser(fname,lname,email,occ,password1,phone)" value="Sign up">  
                     </form>       	   
 			</div> <!-- /.col-xs-12 -->
 </div> <!-- /.row -->

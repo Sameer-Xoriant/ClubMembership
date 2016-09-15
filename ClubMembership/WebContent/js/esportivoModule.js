@@ -1,6 +1,10 @@
 var module = angular.module('esportivo', ['ngRoute','ngCookies']);
 
 function EsportivoController($scope, $http, $rootScope, $location, $route, $cookieStore) {
+	
+	  var today = new Date();
+	  var minAge = 18;
+	  $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
 
 	//Register Function
 	$scope.registerUser = function(fn,ln,em,occ,pass,phone1){
@@ -34,12 +38,16 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
             	   paymentDone : 0
              }
       }).then(function successCallback(response) {
-      		var data = response.data;
+    	  	var data = response.data;
+    	  	if(data.result != 'failed')
+      		{
+    	  	
             swal({title: "Registration successful!",   text: "Now you can Proceed To login.",   imageUrl: "images/thumbs-up.jpg" });
             $route.reload();
-             },function errorCallback(response) {
+      		}else{
             	 swal("Registration Fialed !" , "Please try again" , "warning");
-          	  });
+          	  }
+    	  	});
 	};
 	
 	//Login Function
@@ -467,6 +475,17 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		        if ($(el).val() == '') $(el).attr('type', 'text');
 		    });
 		});
+		
+		$(function () {
+		    $('input[data-relmax]').each(function () {
+		        var oldVal = $(this).prop('value');
+		        var relmax = $(this).data('relmax');
+		        var max = new Date();
+		        max.setFullYear(max.getFullYear() + relmax);
+		        $.prop(this, 'max', $(this).prop('valueAsDate', max).val());
+		        $.prop(this, 'value', oldVal);
+		    });
+		});
 	};
 
 	$scope.showstatus = function() {
@@ -507,10 +526,20 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 			$location.path('/dashboard');
 		}
 	}
-	
-	
-	
+		
 };
+
+module.directive('stringToTimestamp', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, ele, attr, ngModel) {
+            // view to model
+            ngModel.$parsers.push(function(value) {
+                return Date.parse(value);
+            });
+        }
+    }
+});
 
 module.controller('EsportivoController', EsportivoController);
 
