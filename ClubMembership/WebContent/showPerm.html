@@ -13,7 +13,7 @@
 				<th><b>Date of Joining</b></th>
             </thead>
 			
-    		<tr ng-repeat="user in regUsers">
+    		<tr ng-repeat="user in permUsers">
     			<td>{{user.firstName}}</td>
     			<td>{{user.lastName}}</td>
     			<td>{{user.occupation}}</td>
@@ -22,6 +22,7 @@
     			<td>{{user.registeredDate}}</td>
     		</tr>
 		</table>
+		<p ng-if="!permUsers.length" text-align="center"><strong>Sorry :( No Members to Display</strong></p>
 	</div>
 </div>
 </div>

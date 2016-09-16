@@ -1,7 +1,7 @@
 <section id="about" class="section-content about" ng-controller="EsportivoController">
         <div class="container" ng-init="userProfile()" ng-model="userProfile">
         	<div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-12  col-sm-12">
                 <figure class="fig-profile wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
                 	<img class="img-responsive img-circle img-profile" title="{{userProfile.firstName + userProfile.lastName}}" alt="{{userProfile.firstName + userProfile.lastName}}" src="http://rolyart.ro/wp-content/uploads/2016/07/roland-maruntelu-freelancer-romania.jpg">
                     <figcaption>Hello !</figcaption> 
@@ -21,12 +21,12 @@
                         <span class="hr-divider col-xs-5"></span>
                     </div>
                 </div>
-                <div class="col-lg-6 profile-left" align="left">
+                <div class="col-lg-6 col-sm-6 profile-left" align="left">
                 <h4 ng-if="userProfile.occupation != null"><strong> Occupation</strong> : {{userProfile.occupation}} </h4>
                 <h4><strong> Registration Date</strong> : {{userProfile.registeredDate | date : 'short'}} </h4>
                 <h4><strong> User Type</strong> : {{userProfile.userType}}</h4>
                 </div>
-                <div class="col-lg-6 profile-right" align="left">
+                <div class="col-lg-6 col-sm-6 profile-right" align="left">
                 <h4><strong> Mobile Number</strong> : {{userProfile.mobileNumber}} </h4>
                 <h4><strong> Joining Date</strong> : {{userProfile.registeredDate | date : 'short'}}</h4>
                 <h4><strong> Date of Birth</strong> : {{userProfile.dateOfBirth}}</h4>
@@ -67,6 +67,7 @@
     			<td><span class="btn btn-success glyphicon glyphicon-ok" ng-click="approveUser(user.emailId)"></span>&nbsp;<button  class='btn btn-danger glyphicon glyphicon-remove row-remove' ng-click="rejectUser(user.emailId)" ></button></td>
     		</tr>
 		</table>
+		<p ng-if="!users.length" text-align="center"><strong>No Requests Pending</strong></p>
 	</div>
 </div>
 </div>
@@ -77,7 +78,7 @@
 	<div class="col-md-12">
         <div class="table-responsive">
         <h3>Pending Permanent User requests</h3>
-        <table id="mytable" class="table table-bordred table-striped" ng-init="getPermPending()" >
+        <table id="mytable" class="table table-bordred table-striped" ng-init="getPermPending()">
             <thead>
 				<th><b>First Name</b></th>
 				<th><b>Last Name</b></th>
@@ -98,6 +99,7 @@
     			<td><span class="btn btn-success glyphicon glyphicon-ok" ng-click="approvePermUser(user.id)"></span>&nbsp;<button  class='btn btn-danger glyphicon glyphicon-remove row-remove' ng-click="rejectPerm(user.id)" ></button></td>
     		</tr>
 		</table>
+		<p ng-if="!permUsers.length" align="center"><strong>No Pending Requests</strong></p>
 	</div>
 </div>
 </div>

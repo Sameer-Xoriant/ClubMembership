@@ -3,7 +3,7 @@
 	<div class="col-md-12">
         <div class="table-responsive">
         <h3>All Temporary Members</h3>
-        <table id="mytable" class="table table-bordred table-striped" ng-init="getUsers()" >
+        <table id="mytable" class="table table-bordred table-striped" ng-init="getUsers()">
             <thead>
 				<th><b>First Name</b></th>
 				<th><b>Last Name</b></th>
@@ -22,6 +22,7 @@
     			<td>{{user.registeredDate}}</td>
     		</tr>
 		</table>
+		<p ng-if="!regUsers.length" text-align="center"><strong>Sorry :( No Members to Display</strong></p>
 	</div>
 </div>
 </div>

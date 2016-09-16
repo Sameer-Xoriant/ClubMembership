@@ -2,20 +2,16 @@ var module = angular.module('esportivo', ['ngRoute','ngCookies']);
 
 function EsportivoController($scope, $http, $rootScope, $location, $route, $cookieStore) {
 	
-	  var today = new Date();
-	  var minAge = 18;
-	  $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
+	  $scope.minAge = new Date(1999, 01, 01);
 
 	//Register Function
 	$scope.registerUser = function(fn,ln,em,occ,pass,phone1){
 //		 var BDate=new Date($scope.dob).toLocaleDateString().split("/");
 //		 var BDate=BDate[0]+BDate[1]+BDate[2];
 		var BDate=new Date($scope.dob);
-		 console.log(BDate);
 //		 var TDate=new Date().toLocaleDateString().split("/");
 //		 var TDate=TDate[0]+TDate[1]+TDate[2];
 		var TDate=new Date();
-		 console.log(TDate);
 		 $http({
              method : 'POST',
              url : 'http://10.20.14.83:9001/users/register',
@@ -71,14 +67,13 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           $cookieStore.put("id", $rootScope.cid);
 	           $cookieStore.put("userType", $rootScope.cut);
 	           $scope.userDetails();
-	           console.log($cookieStore.get("userType"));
 	           $cookieStore.put("login", true);
 	           swal("Welcome Aboard !", "Login was Successful" , "success");
-	           }
 	           if($cookieStore.get('userType') === "User" || $cookieStore.get('userType') === "Temperory" || $cookieStore.get('userType') === "permanent"){
-	        	   $location.path('/dashboard');
+			 	   $location.path('/dashboard');
 	           }else if($cookieStore.get('userType') === "Staff" || $cookieStore.get('userType') === "Secretary"){
-	        	   $location.path('/staffDashboard');
+			 	   $location.path('/staffDashboard');
+	           }
 	           }else {
 	    	   swal("Login Failed" ," ", "warning");
 	    	   $location.path('/login');
@@ -161,9 +156,9 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	           }
 	    }).then(function successCallback(response) {
 	           var data = response.data;
-	           console.log("Rejected");
+
 	    }, function errorCallback(response) {
-	    		console.log("Error Hoo Gaya bhai");
+
 	    }); 
 };
 
@@ -203,7 +198,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 			           var rdater = new Date($rootScope.rdate).toLocaleDateString();
 			           $cookieStore.put("Name", $rootScope.cname);
 			           $cookieStore.put("dater",dater);
-			           console.log($cookieStore.get("dater"));
+
 		        });
 		
 	};
@@ -234,7 +229,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 			        var rdater = new Date($rootScope.rdate).toLocaleDateString();
 			        $cookieStore.remove("rdater");
 			        $cookieStore.put("rdater",rdater);
-			        console.log($cookieStore.get("rdater"));
+
 	        });
 	}else{
 		$location.path('/login');
@@ -358,7 +353,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	              $cookieStore.remove('Name');
 	              $cookieStore.remove('dater');	
 	              $cookieStore.put("login", false);
-	              console.log('Logout Success !!');
+
 	              swal('Logged Out !' , 'Hope To See You Soon' , 'success');
 	              $location.path('/');
 	              });
@@ -367,10 +362,8 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	//Compare dates
 	$scope.compDate = function(){
 		var datetoday = new Date().toISOString();
-		console.log(datetoday);
 		var dateold = new Date($cookieStore.get("dater")).toISOString();
 		var timeDiff = Math.floor((Date.parse(datetoday) - Date.parse(dateold))/86400000);
-        console.log(timeDiff);
         if(timeDiff > 90){
         	$scope.userPapplication();
         }else{
@@ -380,10 +373,8 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 	
 	$scope.compDaterenew = function(){
 		var datetoday = new Date().toISOString();
-		console.log(datetoday);
 		var dateold = new Date($cookieStore.get("rdater")).toISOString();
 		var timeDiff = Math.floor((Date.parse(datetoday) - Date.parse(dateold))/86400000);
-        console.log(timeDiff);
         if(timeDiff > 90){
         	$location.path('/rpay');
         }else{
@@ -464,6 +455,7 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		  interval: 3000,
 		  pause: "false"
 		});
+		
 		$('input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="time"], input[type="week"]').each(function() {
 		    var el = this, type = $(el).attr('type');
 		    if ($(el).val() == '') $(el).attr('type', 'text');
@@ -473,17 +465,6 @@ function EsportivoController($scope, $http, $rootScope, $location, $route, $cook
 		    });
 		    $(el).blur(function() {
 		        if ($(el).val() == '') $(el).attr('type', 'text');
-		    });
-		});
-		
-		$(function () {
-		    $('input[data-relmax]').each(function () {
-		        var oldVal = $(this).prop('value');
-		        var relmax = $(this).data('relmax');
-		        var max = new Date();
-		        max.setFullYear(max.getFullYear() + relmax);
-		        $.prop(this, 'max', $(this).prop('valueAsDate', max).val());
-		        $.prop(this, 'value', oldVal);
 		    });
 		});
 	};

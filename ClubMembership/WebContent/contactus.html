@@ -43,8 +43,8 @@
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-phone-square bigicon"></i></span>
                             <div class="col-md-8">
-                                <input id="phone" name="phone" ng-model="phone" type="number" placeholder="Phone" class="form-control" required>
-                            	<p id="fval" class="text-danger" ng-show="contactForm.phone.$touched && contactForm.phone.$invalid">Enter Phone No.</p>
+                                <input id="phone" name="phone" ng-model="phone" type="number" placeholder="Phone" class="form-control" ng-minlength="10" ng-maxlength="10" required>
+                            	<p id="fval" class="text-danger" ng-show="(contactForm.phone.$touched && contactForm.phone.$invalid)">Mobile number must be 10 digits long</p>
                             </div>
                         </div>
 
